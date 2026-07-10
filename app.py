@@ -378,7 +378,7 @@ def load_css() -> str:
     </style>
     """
 
-st.markdown(load_css(), unsafe_allow_html=True)
+#st.markdown(load_css(), unsafe_allow_html=True)
 
 # ========================
 # CACHED DATA LOADERS
