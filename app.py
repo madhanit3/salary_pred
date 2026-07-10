@@ -193,13 +193,32 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-        # Show input summary
+        # Show input summary - FIXED: Using st.write instead of st.dataframe to avoid Arrow conversion issues
         with st.expander("📋 View Input Summary"):
-            summary_df = pd.DataFrame({
+            # Create summary as a simple dictionary display
+            summary_data = {
                 "Feature": ["Age", "Gender", "Education Level", "Job Title", "Years of Experience"],
-                "Value": [age, gender, education, job_title, experience]
-            })
-            st.dataframe(summary_df, use_container_width=True, hide_index=True)
+                "Value": [str(age), str(gender), str(education), str(job_title), str(experience)]
+            }
+            
+            # Use st.table instead of st.dataframe to avoid Arrow serialization issues
+            summary_df = pd.DataFrame(summary_data)
+            
+            # Display using st.table which is more compatible
+            st.table(summary_df)
+            
+            # Alternative: display as metrics in columns
+            st.markdown("---")
+            st.markdown("**Input Details:**")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Age", age)
+                st.metric("Gender", gender)
+            with col2:
+                st.metric("Education", education)
+                st.metric("Job Title", job_title)
+            with col3:
+                st.metric("Experience", f"{experience} years")
     
     # Footer
     st.markdown("""
